@@ -36,7 +36,11 @@ public class Rogue extends Player {
         currentEnergy -= abilityCost;
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < 2) {
-                enemy.receiveDamage(attack);
+                int defense = enemy.defend();
+                if(this.attack - defense > 0)
+                {
+                    enemy.health.
+                }
             }
         }
     }
