@@ -19,6 +19,13 @@ public class Health {
     public int getCurrent() {
         return current;
     }
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCurrent(int current) {
+        this.current = current;
+    }
 
     public void increaseMax(int healthGain) {
         capacity += healthGain;

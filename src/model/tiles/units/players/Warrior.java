@@ -38,12 +38,13 @@ public class Warrior extends Player {
             return;
         }
         // Cast ability
+
         remainingCooldown = abilityCooldown;
-        currentHealth = Math.min(currentHealth + DEFENSE_MULTIPLIER * defense, health.getMax());
+        health.setCurrent(Math.min(health.getCurrent() + DEFENSE_MULTIPLIER * defense, health.getCapacity()));
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < ABILITY_RANGE) {
-                int damage = (int) (health.getMax() * HEALTH_PERCENTAGE);
-                enemy.receiveDamage(damage);
+                int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
+                enemy.takeDamage(damage);
                 break;
             }
         }

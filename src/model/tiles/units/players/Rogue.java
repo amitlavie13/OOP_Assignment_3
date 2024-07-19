@@ -1,7 +1,17 @@
 package model.tiles.units.players;
 
 import model.tiles.units.enemies.Enemy;
-
+import model.tiles.units.Unit;
+import model.tiles.Empty;
+import model.tiles.Tile;
+import model.tiles.Wall;
+import model.tiles.units.enemies.Enemy;
+import model.tiles.units.players.Player;
+import utils.Health;
+import utils.Position;
+import utils.callbacks.DeathCallback;
+import utils.callbacks.MessageCallback;
+import utils.generators.Generator;
 import java.util.List;
 
 public class Rogue extends Player {
@@ -39,7 +49,7 @@ public class Rogue extends Player {
                 int defense = enemy.defend();
                 if(this.attack - defense > 0)
                 {
-                    enemy.health.
+                    enemy.health.;
                 }
             }
         }
