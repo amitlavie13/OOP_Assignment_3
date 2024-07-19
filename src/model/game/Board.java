@@ -42,6 +42,10 @@ public class Board {
         return board.get(position);
     }
 
+    public void setTileAtPosition(Position position, Tile tile) {
+        board.put(position, tile);
+    }
+
 
     public Player getPlayer() {
         return player;
