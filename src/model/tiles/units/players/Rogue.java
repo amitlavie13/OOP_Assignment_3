@@ -47,9 +47,11 @@ public class Rogue extends Player {
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < 2) {
                 int defense = enemy.defend();
-                if(this.attack - defense > 0)
+                enemy.health.takeDamage(attack-defense);
+                if(!enemy.alive())
                 {
-                    enemy.health.;
+                    addExperience(enemy.experienceValue());
+                    enemy.onDeath();
                 }
             }
         }
@@ -58,7 +60,8 @@ public class Rogue extends Player {
     @Override
     public void visit(Enemy enemy) {
         battle(enemy);
-        if (!enemy.alive()) {
+        if (!enemy.alive())
+        {
             addExperience(enemy.experienceValue());
             enemy.onDeath();
         }

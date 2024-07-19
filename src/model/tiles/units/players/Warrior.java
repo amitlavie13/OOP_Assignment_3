@@ -44,7 +44,12 @@ public class Warrior extends Player {
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < ABILITY_RANGE) {
                 int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
-                enemy.takeDamage(damage);
+                enemy.health.takeDamage(damage-enemy.defend());
+                if(!enemy.alive())
+                {
+                    addExperience(enemy.experienceValue());
+                    enemy.onDeath();
+                }
                 break;
             }
         }

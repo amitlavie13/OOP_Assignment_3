@@ -13,7 +13,7 @@ import utils.generators.Generator;
 
 public abstract class Unit extends Tile {
     protected String name;
-    protected Health health;
+    public Health health;
     protected int attack;
     protected int defense;
 
