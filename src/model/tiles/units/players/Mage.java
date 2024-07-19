@@ -68,13 +68,4 @@ public class Mage extends Player {
             hits++;
         }
     }
-
-    @Override
-    public void visit(Enemy enemy) {
-        battle(enemy);
-        if (!enemy.alive()) {
-            addExperience(enemy.experienceValue());
-            enemy.onDeath();
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package model.tiles.units.players;
 
+import model.tiles.units.HeroicUnit;
 import model.tiles.units.enemies.Enemy;
 
 import java.util.ArrayList;

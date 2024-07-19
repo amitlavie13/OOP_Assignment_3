@@ -95,13 +95,4 @@ public class Monster extends Enemy {
             // Do nothing, as the wall blocks movement
         }
     }
-
-
-    @Override
-    public void visit(Player player) {
-        battle(player);
-        if (!player.alive()) {
-            player.onDeath();
-        }
-    }
 }

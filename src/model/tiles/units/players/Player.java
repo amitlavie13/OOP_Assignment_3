@@ -55,7 +55,8 @@ public class Player extends Unit {
     }
 
     @Override
-    public void accept(Unit unit) {
+    public void accept(Unit unit)
+    {
         unit.visit(this);
     }
 
@@ -70,7 +71,6 @@ public class Player extends Unit {
             e.onDeath();
         }
     }
-
     @Override
     public void onDeath() {
         //TODO: Implement onDeath
