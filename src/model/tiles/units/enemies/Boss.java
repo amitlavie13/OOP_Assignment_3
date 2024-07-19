@@ -17,11 +17,10 @@ public abstract class Boss extends Enemy implements HeroicUnit {
     protected Player player; // Ensure this player reference is properly managed
 
     public Boss(char tile, String name, int hitPoints, int attack, int defense, int visionRange, int abilityFrequency, Board board, Player player) {
-        super(tile, name, hitPoints, attack, defense, 0); // Experience value set to 0 as it's not used
+        super(tile, name, hitPoints, attack, defense, 0,board); // Experience value set to 0 as it's not used
         this.visionRange = visionRange;
         this.abilityFrequency = abilityFrequency;
         this.combatTicks = 0;
-        this.board = board;
         this.player = player;
     }
 
@@ -111,4 +110,13 @@ public abstract class Boss extends Enemy implements HeroicUnit {
 
     @Override
     public abstract void castAbility(Player player);
+
+    @Override
+    public String description()
+    {
+        return this.getName() + "\t" +
+                "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
+                "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
+                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange + "\n";
+    }
 }

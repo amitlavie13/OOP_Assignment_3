@@ -1,7 +1,9 @@
 package model.tiles.units.players;
 
+import model.game.Board;
 import model.tiles.units.Unit;
 import model.tiles.units.enemies.Enemy;
+import utils.Position;
 
 public class Player extends Unit {
     public static final char PLAYER_TILE = '@';
@@ -12,11 +14,13 @@ public class Player extends Unit {
 
     protected int level;
     protected int experience;
+    protected Board board;
 
-    public Player(String name, int hitPoints, int attack, int defense) {
+    public Player(String name, int hitPoints, int attack, int defense,Board board) {
         super(PLAYER_TILE, name, hitPoints, attack, defense);
         this.level = 1;
         this.experience = 0;
+        this.board = board;
     }
 
     public void addExperience(int experienceValue){
@@ -67,12 +71,15 @@ public class Player extends Unit {
     public void visit(Enemy e){
         battle(e);
         if(!e.alive()){
+            Position enemyPosition = e.getPosition();
             addExperience(e.experienceValue());
             e.onDeath();
+            this.swapPosition(board.getTileAtPosition(enemyPosition));
         }
     }
-    @Override
-    public void onDeath() {
-        //TODO: Implement onDeath
+
+    public void onDeath()
+    {
+        this.tile = 'X';
     }
 }

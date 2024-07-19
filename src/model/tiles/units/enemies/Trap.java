@@ -15,17 +15,16 @@ public class Trap extends Enemy {
     private int invisibilityTime;
     private int ticksCount;
     private boolean visible;
-
-    private Board board;
+    private char tileCharReminder;
 
     public Trap(char tile, String name, int hitPoints, int attack, int defense, int experienceValue,
                 int visibilityTime, int invisibilityTime, Board board) {
-        super(tile, name, hitPoints, attack, defense, experienceValue);
+        super(tile, name, hitPoints, attack, defense, experienceValue,board);
         this.visibilityTime = visibilityTime;
         this.invisibilityTime = invisibilityTime;
         this.ticksCount = 0;
         this.visible = true;
-        this.board = board;
+        tileCharReminder = tile;
     }
 
     public void onGameTick(Player player) {
@@ -40,8 +39,10 @@ public class Trap extends Enemy {
         if (ticksCount >= (visibilityTime + invisibilityTime)) {
             ticksCount = 0;
             visible = true;
+            this.tile = tileCharReminder;
         } else if (ticksCount == visibilityTime) {
             visible = false;
+            this.tile = '.';
         }
     }
 
@@ -54,6 +55,15 @@ public class Trap extends Enemy {
                 player.onDeath();
             }
         }
+    }
+
+    @Override
+    public String description()
+    {
+        return this.getName() + "\t" +
+                "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
+        "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
+                "Experience Value: " + this.experienceValue;
     }
 
 

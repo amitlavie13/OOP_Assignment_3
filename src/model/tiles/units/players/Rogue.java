@@ -1,5 +1,6 @@
 package model.tiles.units.players;
 
+import model.game.Board;
 import model.tiles.units.enemies.Enemy;
 import model.tiles.units.Unit;
 import model.tiles.Empty;
@@ -19,8 +20,8 @@ public class Rogue extends Player {
     private int currentEnergy;
     private static final int MAX_ENERGY = 100;
 
-    public Rogue(String name, int hitPoints, int attack, int defense, int abilityCost) {
-        super(name, hitPoints, attack, defense);
+    public Rogue(String name, int hitPoints, int attack, int defense, int abilityCost, Board board) {
+        super(name, hitPoints, attack, defense,board);
         this.abilityCost = abilityCost;
         this.currentEnergy = MAX_ENERGY;
     }

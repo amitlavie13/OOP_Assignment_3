@@ -11,12 +11,10 @@ import model.game.Board;
 
 public class Monster extends Enemy {
     private int visionRange;
-    private Board board;
 
     public Monster(char tile, String name, int hitPoints, int attack, int defense, int experienceValue, int visionRange, Board board) {
-        super(tile, name, hitPoints, attack, defense, experienceValue);
+        super(tile, name, hitPoints, attack, defense, experienceValue,board);
         this.visionRange = visionRange;
-        this.board = board;
     }
 
     public void onGameTick(Player player) {
@@ -94,5 +92,14 @@ public class Monster extends Enemy {
         } else if (newTile instanceof Wall) {
             // Do nothing, as the wall blocks movement
         }
+    }
+
+    @Override
+    public String description()
+    {
+        return this.getName() + "\t" +
+                "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
+                "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
+                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange + "\n";
     }
 }

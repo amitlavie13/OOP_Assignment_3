@@ -1,5 +1,6 @@
 package model.tiles.units.players;
 
+import model.game.Board;
 import model.tiles.units.enemies.Enemy;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class Mage extends Player {
     private int hitsCount;
     private int abilityRange;
 
-    public Mage(String name, int hitPoints, int attack, int defense, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange) {
-        super(name, hitPoints, attack, defense);
+    public Mage(String name, int hitPoints, int attack, int defense, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange, Board board) {
+        super(name, hitPoints, attack, defense,board);
         this.manaPool = manaPool;
         this.currentMana = manaPool / 4;
         this.manaCost = manaCost;

@@ -46,6 +46,9 @@ public class Board {
         board.put(position, tile);
     }
 
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
 
     public Player getPlayer() {
         return player;

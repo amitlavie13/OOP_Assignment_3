@@ -1,5 +1,6 @@
 package model.tiles.units.players;
 
+import model.game.Board;
 import model.tiles.units.HeroicUnit;
 import model.tiles.units.enemies.Enemy;
 
@@ -12,9 +13,9 @@ public class Hunter extends Player
     private int arrowCount;
     private int ticksCount;
 
-    public Hunter(String name, int hitPoints, int attack, int defense, int range,int arrowCount)
+    public Hunter(String name, int hitPoints, int attack, int defense, int range, int arrowCount, Board board)
     {
-        super(name, hitPoints,attack,defense);
+        super(name, hitPoints,attack,defense,board);
         this.range = range;
         this.arrowCount = arrowCount;
         this.ticksCount = 0;

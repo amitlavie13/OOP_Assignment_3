@@ -1,5 +1,6 @@
 package model.tiles.units.players;
 
+import model.game.Board;
 import model.tiles.units.enemies.Enemy;
 
 import java.util.List;
@@ -12,8 +13,8 @@ public class Warrior extends Player {
     private int abilityCooldown;
     private int remainingCooldown;
 
-    public Warrior(String name, int hitPoints, int attack, int defense, int abilityCooldown) {
-        super(name, hitPoints, attack, defense);
+    public Warrior(String name, int hitPoints, int attack, int defense, int abilityCooldown, Board board) {
+        super(name, hitPoints, attack, defense,board);
         this.abilityCooldown = abilityCooldown;
         this.remainingCooldown = 0;
     }
