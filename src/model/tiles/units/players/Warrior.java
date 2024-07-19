@@ -24,7 +24,7 @@ public class Warrior extends Player {
         remainingCooldown = 0;
         health.increaseMax(5 * level);
         attack += 2 * level;
-        defense += 1 * level;
+        defense += level;
     }
 
     public void onGameTick() {

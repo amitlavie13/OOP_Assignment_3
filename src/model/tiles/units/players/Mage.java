@@ -3,6 +3,8 @@ package model.tiles.units.players;
 import model.tiles.units.enemies.Enemy;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Mage extends Player {
     private int manaPool;
@@ -31,10 +33,12 @@ public class Mage extends Player {
     }
 
     public void onGameTick() {
-        currentMana = Math.min(manaPool, currentMana + 1 * level);
+        currentMana = Math.min(manaPool, currentMana + level);
     }
 
-    public void castSpecialAbility(List<Enemy> enemies) {
+    public void castSpecialAbility(List<Enemy> enemies)
+    {
+        Random rand = new Random();
         if (currentMana < manaCost) {
             // Handle insufficient mana error
             messageCallback.send("Not enough mana.");
@@ -43,15 +47,25 @@ public class Mage extends Player {
         // Cast ability
         currentMana -= manaCost;
         int hits = 0;
-        while (hits < hitsCount) {
-            for (Enemy enemy : enemies) {
-                if (enemy.getPosition().range(this.getPosition()) < abilityRange) {
-                    enemy.receiveDamage(spellPower);
-                    hits++;
-                    if (hits >= hitsCount) break;
-                }
+        List<Enemy> enemyInRange = new ArrayList<>();
+        for(Enemy enemy : enemies)
+        {
+            if(enemy.getPosition().range(this.getPosition()) < abilityRange)
+            {
+                enemyInRange.add(enemy);
             }
-            if (hits >= hitsCount) break;
+        }
+        while (hits < hitsCount && !enemyInRange.isEmpty())
+        {
+            int randomIndex = rand.nextInt(enemyInRange.size());
+            enemyInRange.get(randomIndex).health.takeDamage(spellPower-defend());
+            if (!enemyInRange.get(randomIndex).alive())
+            {
+                addExperience(enemyInRange.get(randomIndex).experienceValue());
+                enemyInRange.get(randomIndex).onDeath();
+                enemyInRange.remove(randomIndex);
+            }
+            hits++;
         }
     }
 
