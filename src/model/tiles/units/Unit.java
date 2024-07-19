@@ -70,7 +70,8 @@ public abstract class Unit extends Tile {
     public abstract void visit(Player p);
     public abstract void visit(Enemy e);
 
-    public void onDeath(){
+    public void onDeath()
+    {
         deathCallback.onDeath();
     }
 

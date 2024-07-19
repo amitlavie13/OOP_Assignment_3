@@ -56,14 +56,4 @@ public class Rogue extends Player {
             }
         }
     }
-
-    @Override
-    public void visit(Enemy enemy) {
-        battle(enemy);
-        if (!enemy.alive())
-        {
-            addExperience(enemy.experienceValue());
-            enemy.onDeath();
-        }
-    }
 }
