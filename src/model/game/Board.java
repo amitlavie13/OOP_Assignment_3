@@ -36,4 +36,18 @@ public class Board {
         }
         return sb.toString();
     }
+
+
+    public Tile getTileAtPosition(Position position) {
+        return board.get(position);
+    }
+
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 }
