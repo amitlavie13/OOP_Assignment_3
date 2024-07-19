@@ -55,4 +55,15 @@ public class Warrior extends Player {
             }
         }
     }
+
+    @Override
+    public String description()
+    {
+        return this.getName() + "\t" +
+                "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
+                "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
+                "Level: " + this.level + "\t" +
+                "Experience: " + this.experience + "\t" + "Cooldown: " + this.remainingCooldown +
+                "/"+this.abilityCooldown;
+    }
 }

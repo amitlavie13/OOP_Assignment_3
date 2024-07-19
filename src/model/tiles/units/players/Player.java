@@ -82,4 +82,10 @@ public class Player extends Unit {
     {
         this.tile = 'X';
     }
+
+    //will be overridden
+    public String description()
+    {
+        return "";
+    }
 }

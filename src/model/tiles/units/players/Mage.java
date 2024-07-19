@@ -69,4 +69,14 @@ public class Mage extends Player {
             hits++;
         }
     }
+
+    public String description()
+    {
+        return this.getName() + "\t" +
+                "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
+                "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
+                "Level: " + this.level + "\t" +
+                "Experience: " + this.experience + "\t" + "Mana: " + this.currentMana +
+                "/"+this.manaPool + "\t" + "Spell Power: " + this.spellPower;
+    }
 }
