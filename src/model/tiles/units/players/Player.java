@@ -4,6 +4,12 @@ import model.game.Board;
 import model.tiles.units.Unit;
 import model.tiles.units.enemies.Enemy;
 import utils.Position;
+import model.tiles.Tile;
+import model.tiles.Empty;
+import model.tiles.Wall;
+import utils.callbacks.DeathCallback;
+import  utils.callbacks.MessageCallback;
+import utils.generators.Generator;
 
 public class Player extends Unit {
     public static final char PLAYER_TILE = '@';
@@ -16,11 +22,16 @@ public class Player extends Unit {
     protected int experience;
     protected Board board;
 
+
     public Player(String name, int hitPoints, int attack, int defense,Board board) {
         super(PLAYER_TILE, name, hitPoints, attack, defense);
         this.level = 1;
         this.experience = 0;
         this.board = board;
+    }
+    public Player initialize(Position p, Generator generator, DeathCallback deathCallback, MessageCallback messageCallback) {
+        super.initialize(p, generator, deathCallback, messageCallback);
+        return this;
     }
 
     public void addExperience(int experienceValue){
@@ -78,9 +89,44 @@ public class Player extends Unit {
         }
     }
 
+    public void moveUp() {
+        Position newPos = new Position(this.getPosition().getX(), this.getPosition().getY() - 1);
+        moveTo(newPos);
+    }
+
+    public void moveDown() {
+        Position newPos = new Position(this.getPosition().getX(), this.getPosition().getY() + 1);
+        moveTo(newPos);
+    }
+
+    public void moveLeft() {
+        Position newPos = new Position(this.getPosition().getX() - 1, this.getPosition().getY());
+        moveTo(newPos);
+    }
+
+    public void moveRight() {
+        Position newPos = new Position(this.getPosition().getX() + 1, this.getPosition().getY());
+        moveTo(newPos);
+    }
+
+    private void moveTo(Position newPos) {
+        Tile newTile = board.getTileAtPosition(newPos);
+        if (newTile instanceof Empty) {
+            swapPosition(newTile);
+        } else if (newTile instanceof Enemy) {
+            battle((Enemy) newTile);
+        } else if (newTile instanceof Wall) {
+            // Do nothing, as the wall blocks movement
+        }
+    }
+
     public void onDeath()
     {
         this.tile = 'X';
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     //will be overridden
@@ -88,4 +134,5 @@ public class Player extends Unit {
     {
         return "";
     }
+    public void castSpecialAbility(){}
 }

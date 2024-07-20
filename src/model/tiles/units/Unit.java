@@ -20,7 +20,6 @@ public abstract class Unit extends Tile {
     protected Generator generator;
     protected DeathCallback deathCallback;
     protected MessageCallback messageCallback;
-
     public Unit(char tile, String name, int hitPoints, int attack, int defense) {
         super(tile);
         this.name = name;
@@ -71,6 +70,7 @@ public abstract class Unit extends Tile {
     public abstract void visit(Enemy e);
 
     public abstract void onDeath();
+
 
     public String getName()
     {

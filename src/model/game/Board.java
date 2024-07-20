@@ -1,5 +1,6 @@
 package model.game;
 
+import model.tiles.Empty;
 import model.tiles.Tile;
 import model.tiles.units.enemies.Enemy;
 import model.tiles.units.players.Player;
@@ -47,7 +48,15 @@ public class Board {
     }
 
     public void removeEnemy(Enemy enemy) {
+        Position enemyPosition = enemy.getPosition();
+        this.setTileAtPosition(enemyPosition, new Empty());
         enemies.remove(enemy);
+    }
+
+    public void gameTick() {
+        for (Enemy enemy : enemies) {
+            enemy.onGameTick(player);
+        }
     }
 
     public Player getPlayer() {

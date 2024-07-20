@@ -38,8 +38,6 @@ public class Enemy extends Unit {
 
     public void onDeath()
     {
-        Position enemyPosition = getPosition();
-        board.setTileAtPosition(enemyPosition, new Empty());
         board.removeEnemy(this);
         deathCallback.onDeath();
     }
@@ -49,6 +47,7 @@ public class Enemy extends Unit {
     {
         return " ";
     }
+    public void onGameTick(Player player){}
 
 
 }
