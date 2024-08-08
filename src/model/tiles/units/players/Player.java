@@ -75,7 +75,8 @@ public class Player extends Unit {
         unit.visit(this);
     }
 
-    public void visit(Player p){
+    public void visit(Player p)
+    {
         // Do nothing
     }
 
@@ -109,15 +110,10 @@ public class Player extends Unit {
         moveTo(newPos);
     }
 
-    private void moveTo(Position newPos) {
+    private void moveTo(Position newPos)
+    {
         Tile newTile = board.getTileAtPosition(newPos);
-        if (newTile instanceof Empty) {
-            swapPosition(newTile);
-        } else if (newTile instanceof Enemy) {
-            battle((Enemy) newTile);
-        } else if (newTile instanceof Wall) {
-            // Do nothing, as the wall blocks movement
-        }
+        newTile.accept(this);
     }
 
     public void onDeath()
