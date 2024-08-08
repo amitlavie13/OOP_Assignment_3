@@ -85,13 +85,7 @@ public class Monster extends Enemy {
 
     private void moveTo(Position newPos) {
         Tile newTile = board.getTileAtPosition(newPos);
-        if (newTile instanceof Empty) {
-            swapPosition(newTile);
-        } else if (newTile instanceof Player) {
-            battle((Player) newTile);
-        } else if (newTile instanceof Wall) {
-            // Do nothing, as the wall blocks movement
-        }
+        newTile.accept(this);
     }
 
     @Override
