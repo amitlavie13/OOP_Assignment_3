@@ -11,19 +11,36 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Board {
-    private Map<Position, Tile> board;
-    private Player player;
-    private List<Enemy> enemies;
+    private static Board instance;
+    private  Map<Position, Tile> board;
+    private  Player player;
+    private  List<Enemy> enemies;
     private final int width;
 
-    public Board(List<Tile> tiles, Player p, List<Enemy> enemies, int width){
-        this.player = p;
-        this.enemies = enemies;
-        this.width = width;
-        this.board = new TreeMap<>();
-        for(Tile t : tiles){
-            board.put(t.getPosition(), t);
+    private Board(List<Tile> tiles, Player p, List<Enemy> enemies, int width){
+        player = p;
+            this.enemies = enemies;
+            this.width = width;
+            this.board = new TreeMap<>();
+            for(Tile t : tiles){
+                board.put(t.getPosition(), t);
         }
+    }
+
+    public static Board getInstance(List<Tile> tiles, Player p, List<Enemy> enemies, int width)
+    {
+        instance = new Board(tiles, p, enemies, width);
+        return instance;
+    }
+
+    public static Board getInstance()
+    {
+        return instance;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+
     }
 
     @Override

@@ -1,12 +1,17 @@
 package model.tiles.units.enemies;
 
 
+import model.tiles.units.HeroicUnit;
 import model.tiles.units.players.Player;
 import model.game.Board;
 
-public class NightsKing extends Boss {
-    public NightsKing(Board board, Player player) {
-        super('K', "Night's King", 5000, 300, 150, 8, 5000, board, player);
+import java.util.List;
+
+public class NightsKing extends Boss
+{
+    public NightsKing()
+    {
+        super('K', "Night's King", 5000, 300, 150, 5000,8, 3);
     }
 
     @Override
@@ -16,4 +21,5 @@ public class NightsKing extends Boss {
             player.health.takeDamage(damage);
         }
     }
+    public void castAbility(List<Enemy> enemies) {}
 }

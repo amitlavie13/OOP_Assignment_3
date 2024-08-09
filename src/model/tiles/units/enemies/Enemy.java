@@ -5,15 +5,14 @@ import model.tiles.units.Unit;
 import model.tiles.units.players.Player;
 import utils.Position;
 import model.tiles.Empty;
+import utils.callbacks.DeathCallback;
 
-public class Enemy extends Unit {
+public class Enemy extends Unit{
     protected int experienceValue;
-    protected Board board;
 
-    public Enemy(char tile, String name, int hitPoints, int attack, int defense, int experienceValue, Board board) {
+    public Enemy(char tile, String name, int hitPoints, int attack, int defense, int experienceValue) {
         super(tile, name, hitPoints, attack, defense);
         this.experienceValue = experienceValue;
-        this.board = board;
     }
 
     public int experienceValue() {
@@ -38,8 +37,9 @@ public class Enemy extends Unit {
 
     public void onDeath()
     {
-        board.removeEnemy(this);
+        Board board = Board.getInstance();
         deathCallback.onDeath();
+        board.removeEnemy(this);
     }
 
     //will Override

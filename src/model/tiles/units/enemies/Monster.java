@@ -12,8 +12,8 @@ import model.game.Board;
 public class Monster extends Enemy {
     private int visionRange;
 
-    public Monster(char tile, String name, int hitPoints, int attack, int defense, int experienceValue, int visionRange, Board board) {
-        super(tile, name, hitPoints, attack, defense, experienceValue,board);
+    public Monster(char tile, String name, int hitPoints, int attack, int defense, int experienceValue, int visionRange) {
+        super(tile, name, hitPoints, attack, defense, experienceValue);
         this.visionRange = visionRange;
     }
 
@@ -83,7 +83,9 @@ public class Monster extends Enemy {
         moveTo(newPos);
     }
 
-    private void moveTo(Position newPos) {
+    private void moveTo(Position newPos)
+    {
+        Board board = Board.getInstance();
         Tile newTile = board.getTileAtPosition(newPos);
         newTile.accept(this);
     }

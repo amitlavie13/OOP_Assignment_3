@@ -20,14 +20,12 @@ public class Player extends Unit {
 
     protected int level;
     protected int experience;
-    protected Board board;
 
 
-    public Player(String name, int hitPoints, int attack, int defense,Board board) {
+    public Player(String name, int hitPoints, int attack, int defense) {
         super(PLAYER_TILE, name, hitPoints, attack, defense);
         this.level = 1;
         this.experience = 0;
-        this.board = board;
     }
     public Player initialize(Position p, Generator generator, DeathCallback deathCallback, MessageCallback messageCallback) {
         super.initialize(p, generator, deathCallback, messageCallback);
@@ -86,7 +84,7 @@ public class Player extends Unit {
             Position enemyPosition = e.getPosition();
             addExperience(e.experienceValue());
             e.onDeath();
-            this.swapPosition(board.getTileAtPosition(enemyPosition));
+            this.swapPosition(e);
         }
     }
 
@@ -112,6 +110,7 @@ public class Player extends Unit {
 
     private void moveTo(Position newPos)
     {
+        Board board = Board.getInstance();
         Tile newTile = board.getTileAtPosition(newPos);
         newTile.accept(this);
     }

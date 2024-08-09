@@ -7,15 +7,15 @@ import model.tiles.units.enemies.Enemy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hunter extends Player
+public class Hunter extends Player implements HeroicUnit
 {
     private int range;
     private int arrowCount;
     private int ticksCount;
 
-    public Hunter(String name, int hitPoints, int attack, int defense, int range, int arrowCount, Board board)
+    public Hunter(String name, int hitPoints, int attack, int defense, int range, int arrowCount)
     {
-        super(name, hitPoints,attack,defense,board);
+        super(name, hitPoints,attack,defense);
         this.range = range;
         this.arrowCount = arrowCount;
         this.ticksCount = 0;
@@ -41,8 +41,8 @@ public class Hunter extends Player
             ticksCount++;
         }
     }
-
-    public void castSpecialAbility(List<Enemy> enemies)
+    public void castAbility(Player player) {}
+    public void castAbility(List<Enemy> enemies)
     {
         List<Enemy> enemyInRange = new ArrayList<>();
         for(Enemy enemy : enemies)

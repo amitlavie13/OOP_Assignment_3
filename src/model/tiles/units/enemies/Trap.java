@@ -18,8 +18,8 @@ public class Trap extends Enemy {
     private char tileCharReminder;
 
     public Trap(char tile, String name, int hitPoints, int attack, int defense, int experienceValue,
-                int visibilityTime, int invisibilityTime, Board board) {
-        super(tile, name, hitPoints, attack, defense, experienceValue,board);
+                int visibilityTime, int invisibilityTime) {
+        super(tile, name, hitPoints, attack, defense, experienceValue);
         this.visibilityTime = visibilityTime;
         this.invisibilityTime = invisibilityTime;
         this.ticksCount = 0;

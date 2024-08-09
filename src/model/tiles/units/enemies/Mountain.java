@@ -4,6 +4,8 @@ package model.tiles.units.enemies;
 import model.tiles.units.players.Player;
 import model.tiles.units.players.Player;
 import utils.Position;
+
+import java.util.List;
 import java.util.Random;
 import model.tiles.Tile;
 import model.tiles.Empty;
@@ -12,8 +14,8 @@ import model.game.Board;
 
 public class Mountain extends Boss {
 
-    public Mountain(Board board, Player player) {
-        super('M', "Mountain", 1000, 60, 25, 6, 500, board, player);
+    public Mountain() {
+        super('M', "The Mountain", 1000, 60, 25, 500, 6, 5);
     }
 
     @Override
@@ -23,4 +25,6 @@ public class Mountain extends Boss {
             player.health.takeDamage(damage);
         }
     }
+
+    public void castAbility(List<Enemy> enemies){}
 }

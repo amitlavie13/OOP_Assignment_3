@@ -6,6 +6,8 @@ import model.tiles.Tile;
 import model.tiles.Empty;
 import model.tiles.Wall;
 import model.game.Board;
+
+import java.util.List;
 import java.util.Random;
 import model.tiles.units.HeroicUnit;
 
@@ -13,25 +15,24 @@ public abstract class Boss extends Enemy implements HeroicUnit {
     protected int visionRange;
     protected int abilityFrequency;
     protected int combatTicks;
-    protected Board board;
-    protected Player player; // Ensure this player reference is properly managed
 
-    public Boss(char tile, String name, int hitPoints, int attack, int defense, int visionRange, int abilityFrequency, Board board, Player player) {
-        super(tile, name, hitPoints, attack, defense, 0,board); // Experience value set to 0 as it's not used
+    public Boss(char tile, String name, int hitPoints, int attack, int defense,int experienceValue, int visionRange, int abilityFrequency) {
+        super(tile, name, hitPoints, attack, defense, experienceValue); // Experience value set to 0 as it's not used
         this.visionRange = visionRange;
         this.abilityFrequency = abilityFrequency;
         this.combatTicks = 0;
-        this.player = player;
     }
 
-    public void onGameTick() {
+    public void onGameTick()
+    {
+        Board board = Board.getInstance();
         if (rangeToPlayer() < visionRange) {
             if (combatTicks >= abilityFrequency) {
                 combatTicks = 0;
-                castAbility(player);
+                castAbility(board.getPlayer());
             } else {
                 combatTicks++;
-                chasePlayer(player);
+                chasePlayer(board.getPlayer());
             }
         } else {
             combatTicks = 0;
@@ -93,7 +94,9 @@ public abstract class Boss extends Enemy implements HeroicUnit {
         moveTo(newPos);
     }
 
-    private void moveTo(Position newPos) {
+    private void moveTo(Position newPos)
+    {
+        Board board = Board.getInstance();
         Tile newTile = board.getTileAtPosition(newPos);
         if (newTile instanceof Empty) {
             swapPosition(newTile);
@@ -104,12 +107,15 @@ public abstract class Boss extends Enemy implements HeroicUnit {
         }
     }
 
-    protected double rangeToPlayer() {
-        return getPosition().range(player.getPosition());
+    protected double rangeToPlayer()
+    {
+        Board board = Board.getInstance();
+        return getPosition().range(board.getPlayer().getPosition());
     }
 
     @Override
     public abstract void castAbility(Player player);
+    public abstract void castAbility(List<Enemy> enemy);
 
     @Override
     public String description()

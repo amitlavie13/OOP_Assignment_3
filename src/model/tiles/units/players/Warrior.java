@@ -1,11 +1,12 @@
 package model.tiles.units.players;
 
 import model.game.Board;
+import model.tiles.units.HeroicUnit;
 import model.tiles.units.enemies.Enemy;
 
 import java.util.List;
 
-public class Warrior extends Player {
+public class Warrior extends Player implements HeroicUnit {
     private static final double HEALTH_PERCENTAGE = 0.10;
     private static final int DEFENSE_MULTIPLIER = 10;
     private static final int ABILITY_RANGE = 3;
@@ -13,8 +14,8 @@ public class Warrior extends Player {
     private int abilityCooldown;
     private int remainingCooldown;
 
-    public Warrior(String name, int hitPoints, int attack, int defense, int abilityCooldown, Board board) {
-        super(name, hitPoints, attack, defense,board);
+    public Warrior(String name, int hitPoints, int attack, int defense, int abilityCooldown) {
+        super(name, hitPoints, attack, defense);
         this.abilityCooldown = abilityCooldown;
         this.remainingCooldown = 0;
     }
@@ -32,7 +33,8 @@ public class Warrior extends Player {
         remainingCooldown = Math.max(0, remainingCooldown - 1);
     }
 
-    public void castSpecialAbility(List<Enemy> enemies) {
+    public void castAbility(Player player) {}
+    public void castAbility(List<Enemy> enemies) {
         if (remainingCooldown > 0) {
             // Handle ability cooldown error
             messageCallback.send("Ability is on cooldown.");

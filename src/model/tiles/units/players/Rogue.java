@@ -1,6 +1,7 @@
 package model.tiles.units.players;
 
 import model.game.Board;
+import model.tiles.units.HeroicUnit;
 import model.tiles.units.enemies.Enemy;
 import model.tiles.units.Unit;
 import model.tiles.Empty;
@@ -15,13 +16,13 @@ import utils.callbacks.MessageCallback;
 import utils.generators.Generator;
 import java.util.List;
 
-public class Rogue extends Player {
+public class Rogue extends Player implements HeroicUnit {
     private int abilityCost;
     private int currentEnergy;
     private static final int MAX_ENERGY = 100;
 
-    public Rogue(String name, int hitPoints, int attack, int defense, int abilityCost, Board board) {
-        super(name, hitPoints, attack, defense,board);
+    public Rogue(String name, int hitPoints, int attack, int defense, int abilityCost) {
+        super(name, hitPoints, attack, defense);
         this.abilityCost = abilityCost;
         this.currentEnergy = MAX_ENERGY;
     }
@@ -37,7 +38,8 @@ public class Rogue extends Player {
         currentEnergy = Math.min(MAX_ENERGY, currentEnergy + 10);
     }
 
-    public void castSpecialAbility(List<Enemy> enemies) {
+    public void castAbility(Player player){}
+    public void castAbility(List<Enemy> enemies) {
         if (currentEnergy < abilityCost) {
             // Handle insufficient energy error
             messageCallback.send("Not enough energy.");

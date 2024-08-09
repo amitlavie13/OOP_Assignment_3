@@ -1,5 +1,6 @@
 package model.game;
 
+import control.initializers.LevelInitializer;
 import model.tiles.units.players.*;
 import model.tiles.units.enemies.Enemy;
 import view.CLI;
@@ -11,13 +12,11 @@ import utils.generators.Generator;
 
 public class Game {
     private Board board;
-    private Player player;
     private final CLI cli;
     private final Scanner scanner;
 
-    public Game(Board board, Player player) {
-        this.board = board;
-        this.player = player;
+    public Game() {
+        this.board = Board.getInstance();
         this.cli = new CLI();
         this.scanner = new Scanner(System.in);
 
@@ -25,15 +24,38 @@ public class Game {
         //player.initialize(player.getPosition(), Generator::new, this::handleDeath, this::handleMessage);
     }
 
-    public void start()
+    public void start(String directoryPath)
     {
-        while (player.alive()) {
-            cli.display(board.toString());
-            cli.displayPlayerStats(player);
-            performAction();
-            board.gameTick();
+        boolean flag = true;
+        int i = 1;
+        int playerID = choosePlayer();
+        LevelInitializer levelInitializer = new LevelInitializer(playerID);
+
+        while (flag)
+        {
+            levelInitializer.initLevel(directoryPath+"level"+i+".txt");
+            while (board.getPlayer().alive() && !board.getEnemies().isEmpty()) {
+                cli.display(board.toString());
+                cli.displayPlayerStats(board.getPlayer());
+                performAction();
+                board.gameTick();
+            }
+            if(board.getPlayer().alive())
+            {
+                if(i<3)
+                    i++;
+                else
+                {
+                    cli.display("You Won!");
+                    flag = false;
+                }
+            }
+            else
+            {
+                flag = false;
+                cli.display("Game Over!");
+            }
         }
-        cli.display("Game Over!");
     }
 
     private String getPlayerAction() {
@@ -49,23 +71,23 @@ public class Game {
                 char action = input.charAt(0);
                 switch (action) {
                     case 'w':
-                        player.moveUp();
+                        board.getPlayer().moveUp();
                         validAction = true;
                         break;
                     case 's':
-                        player.moveDown();
+                        board.getPlayer().moveDown();
                         validAction = true;
                         break;
                     case 'a':
-                        player.moveLeft();
+                        board.getPlayer().moveLeft();
                         validAction = true;
                         break;
                     case 'd':
-                        player.moveRight();
+                        board.getPlayer().moveRight();
                         validAction = true;
                         break;
                     case 'e':
-                        player.castSpecialAbility();
+                        board.getPlayer().castSpecialAbility();
                         validAction = true;
                         break;
                     case 'q':
@@ -83,7 +105,7 @@ public class Game {
     }
 
     private void handleDeath(Unit unit) {
-        if (unit == player) {
+        if (unit == board.getPlayer()) {
             cli.display("You have died.");
         } else {
             board.removeEnemy((Enemy) unit);
@@ -95,17 +117,17 @@ public class Game {
         cli.display(message);
     }
 
-    private void choosePlayer()
+    private int choosePlayer()
     {
         int choice = 0;
         Player[] players = new Player[7];
-        players[0] = new Warrior("Jon Snow",300,30,4,3,this.board);
-        players[1] = new Warrior("The Hound",400,20,6,5,this.board);
-        players[2] = new Mage("Melisandre",100,5,1,300,30,15,5,6,this.board);
-        players[3] = new Mage("Thoros of Myr",250,25,4,150,20,20,3,4,this.board);
-        players[4] = new Rogue("Arya Stark",150,40,2,20,this.board);
-        players[5] = new Rogue("Bronn",250,35,3,50,this.board);
-        players[6] = new Hunter("Ygritte",220,30,2,10,6,this.board);
+        players[0] = new Warrior("Jon Snow",300,30,4,3);
+        players[1] = new Warrior("The Hound",400,20,6,5);
+        players[2] = new Mage("Melisandre",100,5,1,300,30,15,5,6);
+        players[3] = new Mage("Thoros of Myr",250,25,4,150,20,20,3,4);
+        players[4] = new Rogue("Arya Stark",150,40,2,20);
+        players[5] = new Rogue("Bronn",250,35,3,50);
+        players[6] = new Hunter("Ygritte",220,30,2,10,6);
 
         this.cli.display("Select player:");
         for(Player player : players)
@@ -121,6 +143,6 @@ public class Game {
             choice = scanner.nextInt();
         }while(choice < 0 || choice > 6);
 
-        this.player = players[choice];
+        return choice;
     }
 }

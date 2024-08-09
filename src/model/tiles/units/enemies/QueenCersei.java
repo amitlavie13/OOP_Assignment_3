@@ -4,9 +4,11 @@ import model.tiles.units.players.Player;
 import model.tiles.units.players.Player;
 import model.game.Board;
 
+import java.util.List;
+
 public class QueenCersei extends Boss {
-    public QueenCersei(Board board, Player player) {
-        super('C', "Queen Cersei", 100, 10, 10, 1, 1000, board, player);
+    public QueenCersei() {
+        super('C', "Queen Cersei", 100, 10, 10, 1000,1, 8);
     }
 
     @Override
@@ -16,4 +18,6 @@ public class QueenCersei extends Boss {
             player.health.takeDamage(damage);
         }
     }
+
+    public void castAbility(List<Enemy> enemies){}
 }
