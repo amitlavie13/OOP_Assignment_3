@@ -46,24 +46,28 @@ public class Rogue extends Player {
         List<Enemy> deadEnemies = new ArrayList<>();
         if (currentEnergy < abilityCost) {
             // Handle insufficient energy error
-            messageCallback.send("Not enough energy.");
+            messageCallback.send(String.format("%s tried to cast Fan Of Knives, but there was not enough energy: %d/%d",this.name,currentEnergy,abilityCost));
             return false;
         }
         // Cast ability
         currentEnergy -= abilityCost;
+        messageCallback.send(String.format("%s casted Fan of Knives.",this.name));
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < 2) {
                 int defense = enemy.defend();
-                enemy.health.takeDamage(attack-defense);
+                messageCallback.send(String.format("%s rolled %d defense points.",enemy.getName(),defense));
+                int damageTaken = enemy.health.takeDamage(attack-defense);
+                messageCallback.send(String.format("%s hit %s for %d ability damage.",this.name,enemy.getName(),damageTaken));
                 if(!enemy.alive())
                 {
-                    deadEnemies.add(enemy);
+                   deadEnemies.add(enemy);
                 }
             }
         }
         for(Enemy enemy : deadEnemies)
         {
             addExperience(enemy.experienceValue());
+            messageCallback.send(String.format("%s gained %d experience.", this.getName(), enemy.experienceValue()));
             enemy.onDeath();
         }
         return true;

@@ -34,7 +34,9 @@ public abstract class Player extends Unit implements HeroicUnit {
         return this;
     }
 
-    public void addExperience(int experienceValue){
+    public void addExperience(int experienceValue)
+    {
+        messageCallback.send(String.format("%s gained %d experience.", this.getName(), experienceValue));
         this.experience += experienceValue;
         while (experience >= levelRequirement()) {
             levelUp();
@@ -47,6 +49,7 @@ public abstract class Player extends Unit implements HeroicUnit {
         int healthGain = healthGain();
         int attackGain = attackGain();
         int defenseGain = defenseGain();
+        messageCallback.send(String.format("%s reached level %d: +%d Health, +%d Attack, +%d Defense.",this.name,this.level,healthGain,attackGain,defenseGain));
         health.increaseMax(healthGain);
         health.heal();
         attack += attackGain;
@@ -86,8 +89,10 @@ public abstract class Player extends Unit implements HeroicUnit {
         battle(e);
         if(!e.alive()){
             Position enemyPosition = e.getPosition();
+            String expGained = String.format("%s gained %d experience.", this.getName(), e.experienceValue());
             addExperience(e.experienceValue());
             e.onDeath();
+            messageCallback.send(expGained);
             this.swapPosition(board.getTileAtPosition(enemyPosition));
         }
     }

@@ -43,11 +43,15 @@ public abstract class Unit extends Tile {
         return generator;
     }
 
-    public int attack(){
+    public int attack()
+    {
+        messageCallback.send(String.format("%s rolled %d attack points.", this.getName(), attack));
         return generator.generate(attack);
     }
 
-    public int defend(){
+    public int defend()
+    {
+        messageCallback.send(String.format("%s rolled %d defend points.", this.getName(), defense));
         return generator.generate(defense);
     }
 
@@ -57,22 +61,15 @@ public abstract class Unit extends Tile {
 
     public void battle(Unit enemy)
     {
-        int damage = 0;
+        messageCallback.send(String.format("%s engaged in combat with %s.", this.getName(), enemy.getName()));
+        messageCallback.send(this.description());
+        messageCallback.send(enemy.description());
+
         int attack = this.attack();
         int defense = enemy.defend();
-        damage = Math.max(0, attack - defense);
-        damage = Math.min(enemy.health.getCurrent(), damage);
+        int damageTaken = enemy.health.takeDamage(attack - defense);
+        messageCallback.send(String.format("%s dealt %d damage to %s.", this.getName(), damageTaken, enemy.getName()));
 
-        if (messageCallback != null) {
-            messageCallback.send(String.format("%s engaged in combat with %s.\n", this.getName(), enemy.getName()));
-            messageCallback.send(this.description());
-            messageCallback.send(enemy.description());
-            messageCallback.send(String.format("%s rolled %d attack points.\n", this.getName(), attack));
-            messageCallback.send(String.format("%s rolled %d defend points.\n", enemy.getName(), defense));
-            messageCallback.send(String.format("%s dealt %d damage to %s.\n", this.getName(), damage, enemy.getName()));
-        }
-
-        int damageTaken = enemy.health.takeDamage(damage);
     }
 
     public void interact(Tile t){

@@ -4,6 +4,7 @@ import model.game.Board;
 import model.tiles.units.HeroicUnit;
 import model.tiles.units.enemies.Enemy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Warrior extends Player {
@@ -44,17 +45,22 @@ public class Warrior extends Player {
 
         remainingCooldown = abilityCooldown;
         health.setCurrent(Math.min(health.getCurrent() + DEFENSE_MULTIPLIER * defense, health.getCapacity()));
-        for (Enemy enemy : enemies) {
+        List<Enemy> enemiesInRange = new ArrayList<>();
+        for (Enemy enemy : enemies)
+        {
             if (enemy.getPosition().range(this.getPosition()) < ABILITY_RANGE) {
-                int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
-                enemy.health.takeDamage(damage-enemy.defend());
-                if(!enemy.alive())
-                {
-                    addExperience(enemy.experienceValue());
-                    enemy.onDeath();
-                }
-                break;
+                enemiesInRange.add(enemy);
             }
+
+        }
+        int randomIndex = (int) (Math.random() * enemiesInRange.size());
+        Enemy enemy = enemiesInRange.get(randomIndex);
+        int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
+        enemy.health.takeDamage(damage - enemy.defend());
+        if(!enemy.alive())
+        {
+            addExperience(enemy.experienceValue());
+            enemy.onDeath();
         }
         return true;
     }
