@@ -89,10 +89,8 @@ public abstract class Player extends Unit implements HeroicUnit {
         battle(e);
         if(!e.alive()){
             Position enemyPosition = e.getPosition();
-            String expGained = String.format("%s gained %d experience.", this.getName(), e.experienceValue());
             addExperience(e.experienceValue());
             e.onDeath();
-            messageCallback.send(expGained);
             this.swapPosition(board.getTileAtPosition(enemyPosition));
         }
     }
@@ -127,6 +125,7 @@ public abstract class Player extends Unit implements HeroicUnit {
     public void onDeath()
     {
         this.tile = 'X';
+        deathCallback.onDeath(this);
     }
 
     public int getLevel() {

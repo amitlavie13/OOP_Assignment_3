@@ -54,10 +54,7 @@ public class Rogue extends Player {
         messageCallback.send(String.format("%s casted Fan of Knives.",this.name));
         for (Enemy enemy : enemies) {
             if (enemy.getPosition().range(this.getPosition()) < 2) {
-                int defense = enemy.defend();
-                messageCallback.send(String.format("%s rolled %d defense points.",enemy.getName(),defense));
-                int damageTaken = enemy.health.takeDamage(attack-defense);
-                messageCallback.send(String.format("%s hit %s for %d ability damage.",this.name,enemy.getName(),damageTaken));
+                messageCallback.send(String.format("%s hit %s for %d ability damage.",this.name,enemy.getName(),enemy.health.takeDamage(attack-enemy.defend())));
                 if(!enemy.alive())
                 {
                    deadEnemies.add(enemy);
@@ -67,7 +64,6 @@ public class Rogue extends Player {
         for(Enemy enemy : deadEnemies)
         {
             addExperience(enemy.experienceValue());
-            messageCallback.send(String.format("%s gained %d experience.", this.getName(), enemy.experienceValue()));
             enemy.onDeath();
         }
         return true;

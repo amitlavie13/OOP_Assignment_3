@@ -64,7 +64,8 @@ public class Hunter extends Player
                         closest = enemy;
                     }
                 }
-                closest.health.takeDamage(this.attack -closest.defend());
+                messageCallback.send(String.format("%s fired an arrow at %s",this.getName(),closest.getName()));
+                messageCallback.send(String.format("%s hit %s for %d ability damage.",this.getName(),closest.getName(),closest.health.takeDamage(this.attack -closest.defend())));
                 this.arrowCount--;
                 if(!closest.alive())
                 {
@@ -74,11 +75,13 @@ public class Hunter extends Player
             }
             else
             {
+                messageCallback.send(String.format("%s tried to shoot an arrow but has no arrows.",this.getName()));
                 return false;
             }
         }
         else
         {
+            messageCallback.send(String.format("%s tried to shoot an arrow but there were no enemies in range.",this.getName()));
             return false;
         }
         return true;

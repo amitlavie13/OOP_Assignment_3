@@ -44,10 +44,11 @@ public class Mage extends Player {
         Random rand = new Random();
         if (currentMana < manaCost) {
             // Handle insufficient mana error
-            messageCallback.send("Not enough mana.");
+            messageCallback.send(String.format("%s tried to cast Blizzard, but there was not enough mana: %d/%d",this.getName(),currentMana,manaCost));
             return false;
         }
         // Cast ability
+        messageCallback.send(String.format("%s cast Blizzard.",this.name));
         currentMana -= manaCost;
         int hits = 0;
         List<Enemy> enemyInRange = new ArrayList<>();
@@ -61,7 +62,8 @@ public class Mage extends Player {
         while (hits < hitsCount && !enemyInRange.isEmpty())
         {
             int randomIndex = rand.nextInt(enemyInRange.size());
-            enemyInRange.get(randomIndex).health.takeDamage(spellPower-defend());
+
+            messageCallback.send(String.format("%s hit %s for %d ability damage.",this.name,enemyInRange.get(randomIndex).getName(),enemyInRange.get(randomIndex).health.takeDamage(spellPower-enemyInRange.get(randomIndex).defend())));
             if (!enemyInRange.get(randomIndex).alive())
             {
                 addExperience(enemyInRange.get(randomIndex).experienceValue());

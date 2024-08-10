@@ -16,6 +16,7 @@ public class Game {
     private final CLI cli;
     private final Scanner scanner;
     private boolean usedUlt = false;
+    private boolean flag = true;
 
     public Game() {
         this.board = null;
@@ -28,7 +29,6 @@ public class Game {
 
     public void start(String directoryPath)
     {
-        boolean flag = true;
         int i = 1;
         int playerID = choosePlayer();
         LevelInitializer levelInitializer = new LevelInitializer(playerID,this);
@@ -53,11 +53,6 @@ public class Game {
                     cli.display("You Won!");
                     flag = false;
                 }
-            }
-            else
-            {
-                flag = false;
-                cli.display("Game Over!");
             }
         }
     }
@@ -109,9 +104,13 @@ public class Game {
     }
 
     public void handleDeath(Unit unit) {
-        if (unit == board.getPlayer()) {
+        if (unit == board.getPlayer())
+        {
+            cli.displayBoard(this.board);
             cli.display("You have died.");
-        } else {
+            flag = false;
+        }
+        else {
             board.removeEnemy((Enemy) unit);
             cli.display(unit.getName() + " died");
         }

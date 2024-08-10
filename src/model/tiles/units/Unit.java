@@ -45,14 +45,16 @@ public abstract class Unit extends Tile {
 
     public int attack()
     {
-        messageCallback.send(String.format("%s rolled %d attack points.", this.getName(), attack));
-        return generator.generate(attack);
+        int randomAttack = generator.generate(attack);
+        messageCallback.send(String.format("%s rolled %d attack points.", this.getName(), randomAttack));
+        return randomAttack;
     }
 
     public int defend()
     {
-        messageCallback.send(String.format("%s rolled %d defend points.", this.getName(), defense));
-        return generator.generate(defense);
+        int randomDefense =generator.generate(defense);
+        messageCallback.send(String.format("%s rolled %d defend points.", this.getName(), randomDefense));
+        return randomDefense;
     }
 
     public boolean alive(){
@@ -64,11 +66,7 @@ public abstract class Unit extends Tile {
         messageCallback.send(String.format("%s engaged in combat with %s.", this.getName(), enemy.getName()));
         messageCallback.send(this.description());
         messageCallback.send(enemy.description());
-
-        int attack = this.attack();
-        int defense = enemy.defend();
-        int damageTaken = enemy.health.takeDamage(attack - defense);
-        messageCallback.send(String.format("%s dealt %d damage to %s.", this.getName(), damageTaken, enemy.getName()));
+        messageCallback.send(String.format("%s dealt %d damage to %s.", this.getName(), enemy.health.takeDamage(this.attack() - enemy.defend()), enemy.getName()));
 
     }
 

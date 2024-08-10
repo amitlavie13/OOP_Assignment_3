@@ -38,13 +38,16 @@ public class Warrior extends Player {
     public boolean castAbility(List<Enemy> enemies) {
         if (remainingCooldown > 0) {
             // Handle ability cooldown error
-            messageCallback.send("Ability is on cooldown.");
+            messageCallback.send(String.format("%s tried to cast Avenger's Shield, but there is a cooldown: %d",this.name,remainingCooldown));
             return false;
         }
         // Cast ability
 
         remainingCooldown = abilityCooldown;
-        health.setCurrent(Math.min(health.getCurrent() + DEFENSE_MULTIPLIER * defense, health.getCapacity()));
+        int heal = Math.min(health.getCurrent() + DEFENSE_MULTIPLIER * defense, health.getCapacity());
+        health.setCurrent(heal);
+        heal = health.getCurrent()-heal;
+        messageCallback.send(String.format("%s used Avenger's Shield, healing for %d.",this.name,heal));
         List<Enemy> enemiesInRange = new ArrayList<>();
         for (Enemy enemy : enemies)
         {
@@ -53,14 +56,17 @@ public class Warrior extends Player {
             }
 
         }
-        int randomIndex = (int) (Math.random() * enemiesInRange.size());
-        Enemy enemy = enemiesInRange.get(randomIndex);
-        int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
-        enemy.health.takeDamage(damage - enemy.defend());
-        if(!enemy.alive())
+        if(!enemiesInRange.isEmpty())
         {
-            addExperience(enemy.experienceValue());
-            enemy.onDeath();
+            int randomIndex = (int) (Math.random() * enemiesInRange.size());
+            Enemy enemy = enemiesInRange.get(randomIndex);
+            int damage = (int) (health.getCapacity() * HEALTH_PERCENTAGE);
+            messageCallback.send(String.format("%s hit %s for %d ability damage.",this.name,enemy.getName(),enemy.health.takeDamage(damage-enemy.defend())));
+            if(!enemy.alive())
+            {
+                addExperience(enemy.experienceValue());
+                enemy.onDeath();
+            }
         }
         return true;
     }
