@@ -1,31 +1,29 @@
 package control.initializers;
 
 import model.game.Board;
-import model.tiles.Empty;
+import model.game.Game;
 import model.tiles.Tile;
 import model.tiles.units.enemies.Enemy;
 import model.tiles.units.players.Player;
 import utils.Position;
-import utils.callbacks.DeathCallback;
-import utils.callbacks.ObjectCallBack;
 import utils.generators.RandomGenerator;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class LevelInitializer {
     private final int playerID;
     private boolean firstLevel = true;
     private final TileFactory tileFactory;
+    private final Game game;
 
-    public LevelInitializer(int playerID){
+    public LevelInitializer(int playerID,Game game){
         this.playerID = playerID;
         tileFactory = new TileFactory();
+        this.game =game;
     }
     public void initLevel(String levelPath)
     {
@@ -56,18 +54,18 @@ public class LevelInitializer {
                         if(firstLevel)
                         {
                             player = tileFactory.producePlayer(playerID);
-                            player.initialize(new Position(x, y), new RandomGenerator(), new ObjectCallBack(),new ObjectCallBack());
+                            player.initialize(new Position(x, y));
                             tiles.add(player);
                         }
                         else
                         {
                             player =tileFactory.producePlayer();
-                            player.initialize(new Position(x, y), new RandomGenerator(), new ObjectCallBack(),new ObjectCallBack());
+                            player.initialize(new Position(x, y));
                             tiles.add(player);
                         }
                         break;
                     default:
-                        Enemy enemy = tileFactory.produceEnemy(c,new Position(x,y), new ObjectCallBack(),new RandomGenerator(),new ObjectCallBack());
+                        Enemy enemy = tileFactory.produceEnemy(c,new Position(x,y), this.game::handleDeath,new RandomGenerator(),this.game::handleMessage);
                         tiles.add(enemy);
                         enemies.add(enemy);
                         break;

@@ -3,6 +3,7 @@ package model.game;
 import control.initializers.LevelInitializer;
 import model.tiles.units.players.*;
 import model.tiles.units.enemies.Enemy;
+import utils.generators.RandomGenerator;
 import view.CLI;
 import java.util.Scanner;
 import model.tiles.units.players.Player;
@@ -28,13 +29,14 @@ public class Game {
     public void start(String directoryPath)
     {
         boolean flag = true;
-        int i = 2;
+        int i = 1;
         int playerID = choosePlayer();
-        LevelInitializer levelInitializer = new LevelInitializer(playerID);
+        LevelInitializer levelInitializer = new LevelInitializer(playerID,this);
         while (flag)
         {
             levelInitializer.initLevel(directoryPath+"\\level"+i+".txt");
             this.board = Board.getInstance();
+            board.getPlayer().initialize(board.getPlayer().getPosition(),new RandomGenerator(), this::handleDeath,this::handleMessage);
             while (board.getPlayer().alive() && !board.getEnemies().isEmpty()) {
                 cli.display(board.toString());
                 cli.displayPlayerStats(board.getPlayer());
@@ -106,7 +108,7 @@ public class Game {
         }
     }
 
-    private void handleDeath(Unit unit) {
+    public void handleDeath(Unit unit) {
         if (unit == board.getPlayer()) {
             cli.display("You have died.");
         } else {
@@ -115,7 +117,7 @@ public class Game {
         }
     }
 
-    private void handleMessage(String message) {
+    public void handleMessage(String message) {
         cli.display(message);
     }
 

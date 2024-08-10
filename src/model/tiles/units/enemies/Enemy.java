@@ -37,9 +37,7 @@ public abstract class Enemy extends Unit{
 
     public void onDeath()
     {
-        Board board = Board.getInstance();
-        deathCallback.onDeath();
-        board.removeEnemy(this);
+        deathCallback.onDeath(this);
     }
 
     //will Override

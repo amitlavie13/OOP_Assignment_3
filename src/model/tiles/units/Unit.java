@@ -21,6 +21,7 @@ public abstract class Unit extends Tile {
     protected Generator generator;
     protected DeathCallback deathCallback;
     protected MessageCallback messageCallback;
+
     public Unit(char tile, String name, int hitPoints, int attack, int defense) {
         super(tile);
         this.name = name;
@@ -35,6 +36,11 @@ public abstract class Unit extends Tile {
         this.deathCallback = deathCallback;
         this.messageCallback = messageCallback;
         return this;
+    }
+
+    public Generator getGenerator()
+    {
+        return generator;
     }
 
     public int attack(){
@@ -52,13 +58,21 @@ public abstract class Unit extends Tile {
     public void battle(Unit enemy)
     {
         int damage = 0;
-        CLI cli = new CLI();
         int attack = this.attack();
         int defense = enemy.defend();
         damage = Math.max(0, attack - defense);
         damage = Math.min(enemy.health.getCurrent(), damage);
-        cli.displayCombatInfo(this,enemy,attack,defense,damage);
-        int damageTaken = enemy.health.takeDamage(attack - defense);
+
+        if (messageCallback != null) {
+            messageCallback.send(String.format("%s engaged in combat with %s.\n", this.getName(), enemy.getName()));
+            messageCallback.send(this.description());
+            messageCallback.send(enemy.description());
+            messageCallback.send(String.format("%s rolled %d attack points.\n", this.getName(), attack));
+            messageCallback.send(String.format("%s rolled %d defend points.\n", enemy.getName(), defense));
+            messageCallback.send(String.format("%s dealt %d damage to %s.\n", this.getName(), damage, enemy.getName()));
+        }
+
+        int damageTaken = enemy.health.takeDamage(damage);
     }
 
     public void interact(Tile t){

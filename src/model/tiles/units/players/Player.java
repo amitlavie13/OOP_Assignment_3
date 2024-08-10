@@ -24,7 +24,6 @@ public abstract class Player extends Unit implements HeroicUnit {
     protected int level;
     protected int experience;
 
-
     public Player(String name, int hitPoints, int attack, int defense) {
         super(PLAYER_TILE, name, hitPoints, attack, defense);
         this.level = 1;
