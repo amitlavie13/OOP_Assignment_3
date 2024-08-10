@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args)
     {
         Game game = new Game();
-        game.start(args[0]);
+        game.start("C:\\Users\\User\\Documents\\University\\Year 1\\Principles of object-oriented programming\\levels_dir");
     }
 }

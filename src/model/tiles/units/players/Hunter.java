@@ -7,7 +7,7 @@ import model.tiles.units.enemies.Enemy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hunter extends Player implements HeroicUnit
+public class Hunter extends Player
 {
     private int range;
     private int arrowCount;
@@ -42,7 +42,7 @@ public class Hunter extends Player implements HeroicUnit
         }
     }
     public void castAbility(Player player) {}
-    public void castAbility(List<Enemy> enemies)
+    public boolean castAbility(List<Enemy> enemies)
     {
         List<Enemy> enemyInRange = new ArrayList<>();
         for(Enemy enemy : enemies)
@@ -65,6 +65,7 @@ public class Hunter extends Player implements HeroicUnit
                     }
                 }
                 closest.health.takeDamage(this.attack -closest.defend());
+                this.arrowCount--;
                 if(!closest.alive())
                 {
                     addExperience(closest.experienceValue());
@@ -73,13 +74,14 @@ public class Hunter extends Player implements HeroicUnit
             }
             else
             {
-                //Do Something
+                return false;
             }
         }
         else
         {
-            //Do Something
+            return false;
         }
+        return true;
     }
 
     public String description()

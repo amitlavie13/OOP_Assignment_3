@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Mage extends Player implements HeroicUnit {
+public class Mage extends Player {
     private int manaPool;
     private int currentMana;
     private int manaCost;
@@ -39,13 +39,13 @@ public class Mage extends Player implements HeroicUnit {
     }
 
     public void castAbility(Player player){}
-    public void castAbility(List<Enemy> enemies)
+    public boolean castAbility(List<Enemy> enemies)
     {
         Random rand = new Random();
         if (currentMana < manaCost) {
             // Handle insufficient mana error
             messageCallback.send("Not enough mana.");
-            return;
+            return false;
         }
         // Cast ability
         currentMana -= manaCost;
@@ -70,6 +70,7 @@ public class Mage extends Player implements HeroicUnit {
             }
             hits++;
         }
+        return true;
     }
 
     public String description()

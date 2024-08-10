@@ -23,16 +23,15 @@ public abstract class Boss extends Enemy implements HeroicUnit {
         this.combatTicks = 0;
     }
 
-    public void onGameTick()
+    public void onGameTick(Player player)
     {
-        Board board = Board.getInstance();
         if (rangeToPlayer() < visionRange) {
             if (combatTicks >= abilityFrequency) {
                 combatTicks = 0;
-                castAbility(board.getPlayer());
+                castAbility(player);
             } else {
                 combatTicks++;
-                chasePlayer(board.getPlayer());
+                chasePlayer(player);
             }
         } else {
             combatTicks = 0;
@@ -98,13 +97,7 @@ public abstract class Boss extends Enemy implements HeroicUnit {
     {
         Board board = Board.getInstance();
         Tile newTile = board.getTileAtPosition(newPos);
-        if (newTile instanceof Empty) {
-            swapPosition(newTile);
-        } else if (newTile instanceof Player) {
-            battle((Player) newTile);
-        } else if (newTile instanceof Wall) {
-            // Do nothing, as the wall blocks movement
-        }
+        newTile.accept(this);
     }
 
     protected double rangeToPlayer()
@@ -115,7 +108,7 @@ public abstract class Boss extends Enemy implements HeroicUnit {
 
     @Override
     public abstract void castAbility(Player player);
-    public abstract void castAbility(List<Enemy> enemy);
+    public abstract boolean castAbility(List<Enemy> enemy);
 
     @Override
     public String description()
@@ -123,6 +116,6 @@ public abstract class Boss extends Enemy implements HeroicUnit {
         return this.getName() + "\t" +
                 "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
                 "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
-                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange + "\n";
+                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange;
     }
 }

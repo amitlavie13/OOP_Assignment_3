@@ -1,6 +1,7 @@
 package model.tiles.units.players;
 
 import model.game.Board;
+import model.tiles.units.HeroicUnit;
 import model.tiles.units.Unit;
 import model.tiles.units.enemies.Enemy;
 import utils.Position;
@@ -11,7 +12,9 @@ import utils.callbacks.DeathCallback;
 import  utils.callbacks.MessageCallback;
 import utils.generators.Generator;
 
-public class Player extends Unit {
+import java.util.List;
+
+public abstract class Player extends Unit implements HeroicUnit {
     public static final char PLAYER_TILE = '@';
     protected static final int LEVEL_REQUIREMENT = 50;
     protected static final int HEALTH_GAIN = 10;
@@ -78,13 +81,15 @@ public class Player extends Unit {
         // Do nothing
     }
 
-    public void visit(Enemy e){
+    public void visit(Enemy e)
+    {
+        Board board = Board.getInstance();
         battle(e);
         if(!e.alive()){
             Position enemyPosition = e.getPosition();
             addExperience(e.experienceValue());
             e.onDeath();
-            this.swapPosition(e);
+            this.swapPosition(board.getTileAtPosition(enemyPosition));
         }
     }
 
@@ -129,5 +134,7 @@ public class Player extends Unit {
     {
         return "";
     }
-    public void castSpecialAbility(){}
+    public abstract void onGameTick();
+    public abstract boolean castAbility(List<Enemy> enemies);
+    public abstract void castAbility(Player player);
 }

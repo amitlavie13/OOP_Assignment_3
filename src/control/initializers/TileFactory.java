@@ -58,6 +58,7 @@ public class TileFactory {
     public Player producePlayer(int playerID){
         Supplier<Player> supp = playerTypes.get(playerID-1);
         this.p = supp.get();
+        System.out.println("Produced player: " + this.p);
         return this.p;
     }
 

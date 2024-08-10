@@ -20,15 +20,11 @@ public class CLI extends View {
     }
 
     public void displayCombatInfo(Unit attacker, Unit defender, int attackRoll, int defenseRoll, int damage) {
-        System.out.printf("Combat info:\n");
-        System.out.printf("Attacker: %s\n", attacker.description());
-        System.out.printf("Defender: %s\n", defender.description());
-        System.out.printf("Attack roll: %d\n", attackRoll);
-        System.out.printf("Defense roll: %d\n", defenseRoll);
-        System.out.printf("Damage taken: %d\n", damage);
-        if (!defender.alive()&& defender instanceof Enemy) {
-            System.out.printf("%s has been defeated. %s gained %d experience.\n", defender.getName(), attacker.getName(), ((Enemy) defender).experienceValue());
-        }
+        System.out.printf(attacker.getName()+" engaged in combat with "+defender.getName()+".\n");
+        System.out.printf(attacker.description()+"\n");
+        System.out.printf(defender.description()+"\n");
+        System.out.printf(attacker.getName() +" rolled %d attack points.\n", attackRoll);
+        System.out.printf(defender.getName()+" rolled %d defend points.\n", defenseRoll);
+        System.out.printf(attacker.getName()+" dealt "+damage+" damage to "+defender.getName()+".\n");
     }
-
 }

@@ -7,7 +7,7 @@ import utils.Position;
 import model.tiles.Empty;
 import utils.callbacks.DeathCallback;
 
-public class Enemy extends Unit{
+public abstract class Enemy extends Unit{
     protected int experienceValue;
 
     public Enemy(char tile, String name, int hitPoints, int attack, int defense, int experienceValue) {
@@ -47,7 +47,7 @@ public class Enemy extends Unit{
     {
         return " ";
     }
-    public void onGameTick(Player player){}
+    public abstract void onGameTick(Player player);
 
 
 }

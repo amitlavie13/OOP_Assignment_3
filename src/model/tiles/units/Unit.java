@@ -10,6 +10,7 @@ import utils.Position;
 import utils.callbacks.DeathCallback;
 import utils.callbacks.MessageCallback;
 import utils.generators.Generator;
+import view.CLI;
 
 public abstract class Unit extends Tile {
     protected String name;
@@ -48,9 +49,15 @@ public abstract class Unit extends Tile {
         return health.getCurrent() > 0;
     }
 
-    public void battle(Unit enemy) {
+    public void battle(Unit enemy)
+    {
+        int damage = 0;
+        CLI cli = new CLI();
         int attack = this.attack();
         int defense = enemy.defend();
+        damage = Math.max(0, attack - defense);
+        damage = Math.min(enemy.health.getCurrent(), damage);
+        cli.displayCombatInfo(this,enemy,attack,defense,damage);
         int damageTaken = enemy.health.takeDamage(attack - defense);
     }
 

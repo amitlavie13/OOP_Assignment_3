@@ -19,5 +19,5 @@ public class QueenCersei extends Boss {
         }
     }
 
-    public void castAbility(List<Enemy> enemies){}
+    public boolean castAbility(List<Enemy> enemies){return true;}
 }

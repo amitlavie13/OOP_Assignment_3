@@ -14,9 +14,10 @@ public class Game {
     private Board board;
     private final CLI cli;
     private final Scanner scanner;
+    private boolean usedUlt = false;
 
     public Game() {
-        this.board = Board.getInstance();
+        this.board = null;
         this.cli = new CLI();
         this.scanner = new Scanner(System.in);
 
@@ -27,18 +28,19 @@ public class Game {
     public void start(String directoryPath)
     {
         boolean flag = true;
-        int i = 1;
+        int i = 2;
         int playerID = choosePlayer();
         LevelInitializer levelInitializer = new LevelInitializer(playerID);
-
         while (flag)
         {
-            levelInitializer.initLevel(directoryPath+"level"+i+".txt");
+            levelInitializer.initLevel(directoryPath+"\\level"+i+".txt");
+            this.board = Board.getInstance();
             while (board.getPlayer().alive() && !board.getEnemies().isEmpty()) {
                 cli.display(board.toString());
                 cli.displayPlayerStats(board.getPlayer());
                 performAction();
-                board.gameTick();
+                board.gameTick(usedUlt);
+                usedUlt = false;
             }
             if(board.getPlayer().alive())
             {
@@ -87,7 +89,7 @@ public class Game {
                         validAction = true;
                         break;
                     case 'e':
-                        board.getPlayer().castSpecialAbility();
+                        usedUlt = board.getPlayer().castAbility(board.getEnemies());
                         validAction = true;
                         break;
                     case 'q':
@@ -130,9 +132,11 @@ public class Game {
         players[6] = new Hunter("Ygritte",220,30,2,10,6);
 
         this.cli.display("Select player:");
+        int i = 1;
         for(Player player : players)
         {
-            this.cli.displayPlayerStats(player);
+            this.cli.display(i + ". " +player.description());
+            i++;
         }
 
         do {
@@ -141,7 +145,7 @@ public class Game {
                 scanner.next();
             }
             choice = scanner.nextInt();
-        }while(choice < 0 || choice > 6);
+        }while(choice < 1 || choice > 7);
 
         return choice;
     }

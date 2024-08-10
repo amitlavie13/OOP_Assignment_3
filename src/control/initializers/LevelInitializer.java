@@ -56,11 +56,14 @@ public class LevelInitializer {
                         if(firstLevel)
                         {
                             player = tileFactory.producePlayer(playerID);
+                            player.initialize(new Position(x, y), new RandomGenerator(), new ObjectCallBack(),new ObjectCallBack());
                             tiles.add(player);
                         }
                         else
                         {
-                            tiles.add(tileFactory.producePlayer());
+                            player =tileFactory.producePlayer();
+                            player.initialize(new Position(x, y), new RandomGenerator(), new ObjectCallBack(),new ObjectCallBack());
+                            tiles.add(player);
                         }
                         break;
                     default:

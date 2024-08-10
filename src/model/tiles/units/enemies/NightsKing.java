@@ -21,5 +21,5 @@ public class NightsKing extends Boss
             player.health.takeDamage(damage);
         }
     }
-    public void castAbility(List<Enemy> enemies) {}
+    public boolean castAbility(List<Enemy> enemies) {return true;}
 }

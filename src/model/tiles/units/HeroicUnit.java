@@ -6,6 +6,6 @@ import model.tiles.units.players.Player;
 import java.util.List;
 
 public interface HeroicUnit {
-    void castAbility(List<Enemy> enemies);
+    boolean castAbility(List<Enemy> enemies);
     void castAbility(Player player);
 }

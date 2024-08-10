@@ -1,5 +1,6 @@
 package model.tiles;
 
+import model.game.Board;
 import model.tiles.units.Unit;
 import utils.Position;
 
@@ -16,10 +17,19 @@ public abstract class Tile {
         return this;
     }
 
-    public void swapPosition(Tile t) {
+    public void swapPosition(Tile t)
+    {
+        Board board = Board.getInstance();
         Position temp = t.position;
         t.position = this.position;
         this.position = temp;
+        board.getTreeMap().put(this.position, this);
+        board.getTreeMap().put(t.position, t);
+    }
+
+    public void setPosition(Position p)
+    {
+        this.position = p;
     }
 
     @Override

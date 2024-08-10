@@ -6,7 +6,7 @@ import model.tiles.units.enemies.Enemy;
 
 import java.util.List;
 
-public class Warrior extends Player implements HeroicUnit {
+public class Warrior extends Player {
     private static final double HEALTH_PERCENTAGE = 0.10;
     private static final int DEFENSE_MULTIPLIER = 10;
     private static final int ABILITY_RANGE = 3;
@@ -34,11 +34,11 @@ public class Warrior extends Player implements HeroicUnit {
     }
 
     public void castAbility(Player player) {}
-    public void castAbility(List<Enemy> enemies) {
+    public boolean castAbility(List<Enemy> enemies) {
         if (remainingCooldown > 0) {
             // Handle ability cooldown error
             messageCallback.send("Ability is on cooldown.");
-            return;
+            return false;
         }
         // Cast ability
 
@@ -56,6 +56,7 @@ public class Warrior extends Player implements HeroicUnit {
                 break;
             }
         }
+        return true;
     }
 
     @Override

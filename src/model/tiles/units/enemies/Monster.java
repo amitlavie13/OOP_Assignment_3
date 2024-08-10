@@ -96,6 +96,6 @@ public class Monster extends Enemy {
         return this.getName() + "\t" +
                 "Health: "+this.health.getCurrent() +"/" + this.health.getCapacity() +
                 "\t" + "Attack: " + this.attack + "\t" + "Defense: " + this.defense + "\t" +
-                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange + "\n";
+                "Experience Value: " + this.experienceValue + "\t" + "Vision Range: " + this.visionRange;
     }
 }

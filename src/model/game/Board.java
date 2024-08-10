@@ -17,13 +17,19 @@ public class Board {
     private  List<Enemy> enemies;
     private final int width;
 
-    private Board(List<Tile> tiles, Player p, List<Enemy> enemies, int width){
+    private Board(List<Tile> tiles, Player p, List<Enemy> enemies, int width)
+    {
         player = p;
-            this.enemies = enemies;
-            this.width = width;
-            this.board = new TreeMap<>();
-            for(Tile t : tiles){
-                board.put(t.getPosition(), t);
+        this.enemies = enemies;
+        this.width = width;
+        this.board = new TreeMap<>();
+        for(Tile t : tiles){
+            if (t == null) {
+                System.out.println("Null tile found");
+            } else if (t.getPosition() == null) {
+                System.out.println("Tile with null position found: " + t);
+            }
+            board.put(t.getPosition(), t);
         }
     }
 
@@ -33,8 +39,16 @@ public class Board {
         return instance;
     }
 
+    public Map<Position, Tile> getTreeMap()
+    {
+        return board;
+    }
     public static Board getInstance()
     {
+        if(instance == null)
+        {
+            return null;
+        }
         return instance;
     }
 
@@ -46,12 +60,23 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for(Map.Entry<Position, Tile> entry : board.entrySet()){
+        int count = 0;
+
+        for (Map.Entry<Position, Tile> entry : board.entrySet()) {
             sb.append(entry.getValue().toString());
-            if(entry.getKey().getX() == width-1){
+            count++;
+
+            // Check if we need to add a newline
+            if (count % width == 0) {
                 sb.append("\n");
             }
         }
+
+        // Ensure there's no trailing newline if not needed
+        if (count % width != 0) {
+            sb.append("\n");
+        }
+
         return sb.toString();
     }
 
@@ -60,7 +85,9 @@ public class Board {
         return board.get(position);
     }
 
-    public void setTileAtPosition(Position position, Tile tile) {
+    public void setTileAtPosition(Position position, Tile tile)
+    {
+        tile.initialize(position);
         board.put(position, tile);
     }
 
@@ -70,10 +97,12 @@ public class Board {
         enemies.remove(enemy);
     }
 
-    public void gameTick() {
+    public void gameTick(boolean usedUlt) {
         for (Enemy enemy : enemies) {
             enemy.onGameTick(player);
         }
+        if(!usedUlt)
+            player.onGameTick();
     }
 
     public Player getPlayer() {

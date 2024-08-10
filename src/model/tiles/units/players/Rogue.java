@@ -14,9 +14,11 @@ import utils.Position;
 import utils.callbacks.DeathCallback;
 import utils.callbacks.MessageCallback;
 import utils.generators.Generator;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Rogue extends Player implements HeroicUnit {
+public class Rogue extends Player {
     private int abilityCost;
     private int currentEnergy;
     private static final int MAX_ENERGY = 100;
@@ -39,11 +41,13 @@ public class Rogue extends Player implements HeroicUnit {
     }
 
     public void castAbility(Player player){}
-    public void castAbility(List<Enemy> enemies) {
+    public boolean castAbility(List<Enemy> enemies)
+    {
+        List<Enemy> deadEnemies = new ArrayList<>();
         if (currentEnergy < abilityCost) {
             // Handle insufficient energy error
             messageCallback.send("Not enough energy.");
-            return;
+            return false;
         }
         // Cast ability
         currentEnergy -= abilityCost;
@@ -53,11 +57,16 @@ public class Rogue extends Player implements HeroicUnit {
                 enemy.health.takeDamage(attack-defense);
                 if(!enemy.alive())
                 {
-                    addExperience(enemy.experienceValue());
-                    enemy.onDeath();
+                    deadEnemies.add(enemy);
                 }
             }
         }
+        for(Enemy enemy : deadEnemies)
+        {
+            addExperience(enemy.experienceValue());
+            enemy.onDeath();
+        }
+        return true;
     }
 
     @Override
